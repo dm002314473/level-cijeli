@@ -3,8 +3,10 @@
 
 int main()
 {
-    std::cout << "Soso!" << std::endl;
-    Level lvl1;
+    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Cijeli level");
+
+    Level level(window);
+    level.update();
 
     return 0;
 }

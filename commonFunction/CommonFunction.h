@@ -125,6 +125,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <string>
+#include <iostream>
 
 void spriteSetting(sf::Sprite &sprite, sf::Texture &spriteTexture, float scale);
 bool isButtonClicked(sf::Sprite &button, sf::Vector2i &mousePos);
