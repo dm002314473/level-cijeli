@@ -5,6 +5,14 @@
 
 class Level
 {
+private:
+    sf::RenderWindow *window;
+    sf::Texture backgroundTexture;
+    sf::Sprite backgroundSprite;
+    sf::Clock globalClock;
+
 public:
-    Level();
+    Level(sf::RenderWindow &window);
+    void loadBackground();
+    void update();
 };
