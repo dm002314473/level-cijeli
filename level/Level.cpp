@@ -25,10 +25,19 @@ void Level::update()
                 window->close();
         }
 
-        sf::Time elapsed = globalClock.restart();
+        sf::Time currentTime = globalClock.getElapsedTime();
+        globalClock.restart();
+
+        for (auto &tower : towers)
+            tower->action(currentTime);
 
         window->clear();
         window->draw(backgroundSprite);
+
+        // draw towers
+        for (auto &tower : towers)
+            tower->draw(*window);
+
         window->display();
     }
 }
