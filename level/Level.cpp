@@ -86,10 +86,23 @@ void Level::update()
                         wave++;
                     }
 
+
+                    if(heroj->getIsTroopSelected()){
+                        heroj->setTargetPosition(mousePosition);
+                        heroj->setIsTroopSelected(false);
+                        heroj->setShouldTroopMove(true);
+                    }
+                    if(heroj->getSprite().getGlobalBounds().contains((sf::Vector2f)(mousePosition))){
+                        heroj->setIsTroopSelected(true);
+                        heroj->setShouldTroopMove(false);
+                    }
                 }
         }
-            
-            //heroj->move(dtm);
+        
+        if(heroj->getShouldTroopMove()){
+            heroj->performAnimation(heroj->getWalkTexture(), sf::milliseconds(1000));
+            heroj->move(dtm);
+        }
 
         for (auto it = enemies.begin(); it != enemies.end();)
         {

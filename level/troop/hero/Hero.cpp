@@ -24,6 +24,15 @@ void Hero::move(float dtm)
 {
     sf::Vector2f targetPos((float)(targetPosition.x), (float)(targetPosition.y));
     sf::Vector2f currentPos = getSprite().getPosition();
+    float tolerance = 0.1f;
+
+    if (std::abs(currentPos.x - targetPos.x) < tolerance && std::abs(currentPos.y - targetPos.y) < tolerance)
+    {
+        stopMoving();
+        setShouldTroopMove(false);
+        idleAnimation(getWalkTexture());
+        return;
+    }
 
     if (currentPos.x < targetPos.x)
         moveRight(dtm); 
@@ -33,10 +42,8 @@ void Hero::move(float dtm)
     if (currentPos.y < targetPos.y)
         moveDown(dtm);
     else if (currentPos.y > targetPos.y)
-        moveUp(dtm); 
+        moveUp(dtm);
 
-    if (currentPos == targetPos)
-        stopMoving();  
 }
 
 bool Hero::isEnemyInHeroesRange(Troop *enemyTroop)

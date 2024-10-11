@@ -141,6 +141,8 @@ private:
 
     int wave = 0;
     bool showStartNewWaveFlag = true;
+    
+    bool shouldHeroMove = false;
 
 public:
     Level(sf::RenderWindow &window);

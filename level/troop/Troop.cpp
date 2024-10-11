@@ -101,6 +101,7 @@ void Troop::loadTroopTextures(Level &level, int code, std::vector<sf::Texture> &
     }
 }
 
+void Troop::idleAnimation(std::vector<sf::Texture> &textures) { sprite.setTexture(textures[0]); }
 
 void Troop::performAnimation(std::vector<sf::Texture> &textures, sf::Time animationDuration)
 {
@@ -157,3 +158,16 @@ void Troop::moveRight(float dtm) { sprite.setPosition(sprite.getPosition().x + g
 void Troop::moveLeft(float dtm) { sprite.setPosition(sprite.getPosition().x - getSpeedX() * dtm, sprite.getPosition().y); }
 void Troop::moveUp(float dtm) { sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y - getSpeedY() * dtm); }
 void Troop::moveDown(float dtm) { sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y + getSpeedY() * dtm); }
+
+bool Troop::isTroopClicked(sf::Vector2i &mousePos){
+    if(sprite.getGlobalBounds().contains((sf::Vector2f(mousePos))))
+        return true;
+    return false;
+}
+
+bool Troop::getIsTroopSelected() { return isTroopSelected; }
+void Troop::setIsTroopSelected(bool condition) { isTroopSelected = condition; }
+
+
+bool Troop::getShouldTroopMove() { return shouldTroopMove; }
+void Troop::setShouldTroopMove(bool condition) { shouldTroopMove = condition; }

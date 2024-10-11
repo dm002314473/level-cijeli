@@ -29,6 +29,9 @@ private:
     bool isTroopFighting = false;
     bool isTroopAlive = true;
     int fullHealth;
+
+    bool isTroopSelected = false;
+    bool shouldTroopMove = false;
 public:
     Troop(Level &level, int code);
 
@@ -44,6 +47,8 @@ public:
     void setIsTroopFighting(bool condition);
     void setIsTroopAlive(bool condition);
     void setFullHealth(int newFullHealth);
+    void setIsTroopSelected(bool condition);
+    void setShouldTroopMove(bool condition);
 
     int getHealth();
     int getDamage();
@@ -58,10 +63,13 @@ public:
     int getFullHealth();
     std::vector<sf::Texture>& getWalkTexture();
     std::vector<sf::Texture>& getAttackTexture();
+    bool getIsTroopSelected();
+    bool getShouldTroopMove();
 
     void loadTroopTextures(Level &level, int code, std::vector<sf::Texture> &textures);
 
     void performAnimation(std::vector<sf::Texture> &textures, sf::Time animationDuration);
+    void idleAnimation(std::vector<sf::Texture> &textures);
 
     void draw(sf::RenderWindow &window);
     void updateHealthBarsPosition();
@@ -73,6 +81,8 @@ public:
     virtual void move(float dtm) = 0;
     virtual bool isOutOfMap() = 0;
     virtual void setTargetPosition(sf::Vector2i &mousePos) = 0;
+
+    bool isTroopClicked(sf::Vector2i &mousePos);
 
     void stopMoving();
     void moveRight(float dtm); 
