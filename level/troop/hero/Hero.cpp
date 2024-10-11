@@ -20,26 +20,25 @@ void Hero::setHeroValues(std::vector<std::vector<int>> allStats, int code)
     }
 }
 
-bool Hero::heroMoving(sf::Sprite &sprite, sf::Vector2i &mousePos)
+void Hero::move(float dtm)
 {
-    int moveX = 0, moveY = 0;
-    sf::Vector2f currentPos = sprite.getPosition();
-    if (currentPos.x < mousePos.x)
-        moveX = 1;
-    else if (currentPos.x > mousePos.x)
-        moveX = -1;
+    sf::Vector2f targetPos((float)(targetPosition.x), (float)(targetPosition.y));
+    sf::Vector2f currentPos = getSprite().getPosition();
 
-    if (currentPos.y < mousePos.y)
-        moveY = 1;
-    else if (currentPos.y > mousePos.y)
-        moveY = -1;
+    if (currentPos.x < targetPos.x)
+        moveRight(dtm); 
+    else if (currentPos.x > targetPos.x)
+        moveLeft(dtm);
 
-    sprite.setPosition(currentPos.x + moveX, currentPos.y + moveY);
+    if (currentPos.y < targetPos.y)
+        moveDown(dtm);
+    else if (currentPos.y > targetPos.y)
+        moveUp(dtm); 
 
-    if (int(currentPos.x) == mousePos.x && int(currentPos.y) == mousePos.y)
-        return true;
-    return false;
+    if (currentPos == targetPos)
+        stopMoving();  
 }
+
 bool Hero::isEnemyInHeroesRange(Troop *enemyTroop)
 {
     if (isPointInCircle(enemyTroop->getSprite().getPosition(), getSprite().getPosition(), 150))
@@ -65,3 +64,5 @@ void Hero::setShouldHeroHeal(bool condition) { shouldHeroHeal = condition; }
 
 int Hero::getHealPerSecond() { return healPerSecond; }
 void Hero::setHealPerSecond(int newHealPerSecond) { healPerSecond = newHealPerSecond; }
+
+void Hero::setTargetPosition(sf::Vector2i &mousePos) { targetPosition = static_cast<sf::Vector2f>(mousePos); }

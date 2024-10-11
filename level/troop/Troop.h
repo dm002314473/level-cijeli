@@ -69,4 +69,14 @@ public:
 
     
     void fightingTroop(Troop *troop);
+    
+    virtual void move(float dtm) = 0;
+    virtual bool isOutOfMap() = 0;
+    virtual void setTargetPosition(sf::Vector2i &mousePos) = 0;
+
+    void stopMoving();
+    void moveRight(float dtm); 
+    void moveLeft(float dtm); 
+    void moveUp(float dtm);
+    void moveDown(float dtm);
 };

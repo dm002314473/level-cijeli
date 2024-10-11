@@ -72,4 +72,8 @@ void Soldier::soldierUpgrade(Level &level, int code){
     loadTroopTextures(level, code, getAttackTexture());
     loadTroopTextures(level, code + 1, getWalkTexture());
     setFullHealth(getHealth());
+    getSprite().setPosition(500, 500);
+    setValues(level.getTroopStats(), code);
+    setSoldierValues(level.getTroopStats(), code);
+    setFullHealth(getHealth());
 }

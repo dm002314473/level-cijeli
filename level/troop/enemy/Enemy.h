@@ -10,8 +10,8 @@ class Level;
 class Enemy : public Troop 
 {
 private:
-    std::vector<std::vector<int>> &waypoints;
-    int currentWaypointIndex;
+    std::vector<std::vector<int>> waypointsEnemy;
+    int currentWaypointIndex = 0;
     bool outOfMap = false;     
     int bounty;
     int attackSpeed;
@@ -28,11 +28,8 @@ public:
     int getLiveTaking();
 
     bool shouldEnemyTurn();
-    void move(float dtm);
-    void stop();
-    void stopMoving();
-    void moveRight(float dtm); 
-    void moveLeft(float dtm); 
-    void moveUp(float dtm);
-    void moveDown(float dtm);
+
+    void setTargetPosition(sf::Vector2i &mousePos) override {};
+    void move(float dtm) override;
+    bool isOutOfMap() override;
 };

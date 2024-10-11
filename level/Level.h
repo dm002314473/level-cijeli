@@ -8,6 +8,7 @@
 #include "troop/hero/Hero.h"
 #include "troop/enemy/Enemy.h"
 #include "troop/soldier/Soldier.h"
+#include "waves/Wave.h"
 
 struct Row
 {
@@ -114,8 +115,9 @@ private:
     sf::Texture backgroundTexture;
     sf::Sprite backgroundSprite;
     sf::Clock globalClock;
+    sf::Clock moveClock;
     std::vector<Tower *> towers;
-    std::vector<std::vector<int>> waypoints = {
+    std::vector<std::vector<int>> globalWaypoints  = {
         {0, 432, 2},
         {775, 550, 3},
         {775, 844, 2},
@@ -128,19 +130,31 @@ private:
         {1180, 910},
         {1180, 1220}};
     std::vector<int> heroStandPosition = {1700, 350};
-    Hero *heroj;
-    Soldier *vojnik;
+    
+    std::vector<Wave> levelWaves;
+
+    sf::Sprite *newWave;
+
+    Troop *heroj;
+    std::vector<Troop *> soldiers;
+    std::vector<Troop *> enemies;
+
+    int wave = 0;
+    bool showStartNewWaveFlag = true;
 
 public:
-    Level();
-    
+    Level(sf::RenderWindow &window);
+
     std::vector<std::vector<int>> getTowerStats();
     std::vector<std::vector<int>> getTroopStats();
     std::vector<Row> &getAllTexturesMatrix();
     sf::Texture *getTexturePtr(std::vector<Row> &allTexturesMatrix, int code, int column);
-    Level(sf::RenderWindow &window);
+    
     void loadBackground();
     void update();
     void createHero(Level &level, int code, std::vector<int> heroStandPosition);
     void createSoldier(Level &level, int code);
+
+    void fillWaves();
+    void startNewWave(int waveIndex);
 };

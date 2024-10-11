@@ -30,4 +30,8 @@ public:
     bool isPointInCircle(sf::Vector2f point, sf::Vector2f circleCenter, float radius);
 
     void soldierUpgrade(Level &level, int code);
+
+    void setTargetPosition(sf::Vector2i &mousePos) override {};
+    void move(float dtm) override {};
+    bool isOutOfMap() override { return false; }
 };

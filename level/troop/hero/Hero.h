@@ -14,6 +14,7 @@ private:
     bool shouldHeroHeal;
     int healPerSecond;
     sf::Vector2f heroStandPosition;
+    sf::Vector2f targetPosition;
 public:
     Hero(Level &level, int code, std::vector<int> heroStandPosition);
 
@@ -25,7 +26,10 @@ public:
     int getHealPerSecond();
     
     bool isHeroPositionIsOnPath(std::vector<sf::Color> colors, sf::Color pixelColor);
-    bool heroMoving(sf::Sprite &sprite, sf::Vector2i &mousePos);
     bool isEnemyInHeroesRange(Troop *enemyTroop);
     bool isPointInCircle(sf::Vector2f point, sf::Vector2f circleCenter, float radius);
+
+    void setTargetPosition(sf::Vector2i &mousePos);
+    void move(float dtm) override;
+    bool isOutOfMap() override { return false; }
 };

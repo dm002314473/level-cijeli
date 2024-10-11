@@ -150,3 +150,10 @@ void Troop::updateHealthBar(int currentHealth){
 void Troop::fightingTroop(Troop *troop) { troop->setHealth(troop->getHealth() - getDamage()); }
 
 int generateRandomNumber(int min, int max) { return rand() % (max - min) + min; }
+
+
+void Troop::stopMoving() { sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y); }
+void Troop::moveRight(float dtm) { sprite.setPosition(sprite.getPosition().x + getSpeedX() * dtm, sprite.getPosition().y); }
+void Troop::moveLeft(float dtm) { sprite.setPosition(sprite.getPosition().x - getSpeedX() * dtm, sprite.getPosition().y); }
+void Troop::moveUp(float dtm) { sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y - getSpeedY() * dtm); }
+void Troop::moveDown(float dtm) { sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y + getSpeedY() * dtm); }

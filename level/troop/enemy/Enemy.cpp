@@ -3,7 +3,7 @@
 
 int generateRandomNumber(int min, int max);
 
-Enemy::Enemy(Level &level, int code, std::vector<std::vector<int>> &waypoints, int spawnDelayPixels) : Troop(level, code), waypoints(waypoints)
+Enemy::Enemy(Level &level, int code, std::vector<std::vector<int>> &waypoints, int spawnDelayPixels) : Troop(level, code), waypointsEnemy(waypoints)
 {
     setEnemyValues(level.getTroopStats(), code);
     //depending on level, if road starts from left x - 500, if road starts from right x + 500, if road starts from top y - 500, if road starts from bottom y + 500
@@ -37,12 +37,13 @@ void Enemy::move(float dtm)
     if (shouldEnemyTurn())
         currentWaypointIndex++;
 
-    if (currentWaypointIndex >= waypoints.size()) {
+    if (currentWaypointIndex >= (int)waypointsEnemy.size()) {
         outOfMap = true;
         return;
     }
 
-    switch (waypoints[currentWaypointIndex][2])
+
+    switch (waypointsEnemy[currentWaypointIndex][2])
     {
     case 1:
         moveUp(dtm);
@@ -62,13 +63,12 @@ void Enemy::move(float dtm)
         break;
     }
 }
-
-void Enemy::stop() { getSprite().setPosition(getSprite().getPosition());}
+bool Enemy::isOutOfMap() { return outOfMap || getSprite().getPosition().x > 2500 || getSprite().getPosition().y > 1500; }
 
 bool Enemy::shouldEnemyTurn()
 {
-    float dx = getSprite().getPosition().x - waypoints[currentWaypointIndex + 1][0];
-    float dy = getSprite().getPosition().y - waypoints[currentWaypointIndex + 1][1];
+    float dx = getSprite().getPosition().x - waypointsEnemy[currentWaypointIndex + 1][0];
+    float dy = getSprite().getPosition().y - waypointsEnemy[currentWaypointIndex + 1][1];
     float distance = std::sqrt(dx * dx + dy * dy);
 
     if (distance < 150)
@@ -76,9 +76,4 @@ bool Enemy::shouldEnemyTurn()
     return false;
 }
 
-void Enemy::stopMoving() { getSprite().setPosition(getSprite().getPosition().x, getSprite().getPosition().y); }
-void Enemy::moveRight(float dtm) { getSprite().setPosition(getSprite().getPosition().x + getSpeedX() * dtm, getSprite().getPosition().y); }
-void Enemy::moveLeft(float dtm) { getSprite().setPosition(getSprite().getPosition().x - getSpeedX() * dtm, getSprite().getPosition().y); }
-void Enemy::moveUp(float dtm) { getSprite().setPosition(getSprite().getPosition().x, getSprite().getPosition().y - getSpeedY() * dtm); }
-void Enemy::moveDown(float dtm) { getSprite().setPosition(getSprite().getPosition().x, getSprite().getPosition().y + getSpeedY() * dtm); }
 
