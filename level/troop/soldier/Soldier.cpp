@@ -1,10 +1,10 @@
 #include "Soldier.h"
 #include "../../Level.h"
 
-Soldier::Soldier(Level &level, int code) : Troop(level, code)
+Soldier::Soldier(Level &level, int code, sf::Vector2f spawnPosition) : Troop(level, code)
 {
     setSoldierValues(level.getTroopStats(), code);
-    getSprite().setPosition(1000, 500);
+    getSprite().setPosition(spawnPosition);
     shouldHeroHeal = false;
 }
 

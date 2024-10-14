@@ -42,6 +42,7 @@ void Enemy::move(float dtm)
         return;
     }
 
+    setIsTroopMoving(true);
 
     switch (waypointsEnemy[currentWaypointIndex][2])
     {

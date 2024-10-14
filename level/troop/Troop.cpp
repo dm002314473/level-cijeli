@@ -105,11 +105,13 @@ void Troop::idleAnimation(std::vector<sf::Texture> &textures) { sprite.setTextur
 
 void Troop::performAnimation(std::vector<sf::Texture> &textures, sf::Time animationDuration)
 {
-    if (!isAnimating)
+    if (!isAnimating) 
     {
         isAnimating = true;
         currentFrame = 0;
         animationClock.restart();
+        
+        frameDuration = animationDuration / (float)textures.size();
     }
 
     if (isAnimating)
@@ -122,7 +124,7 @@ void Troop::performAnimation(std::vector<sf::Texture> &textures, sf::Time animat
             {
                 isAnimating = false;
                 currentFrame = 0;
-                sprite.setTexture(textures[0]);
+                sprite.setTexture(textures[0]); 
                 return;
             }
             sprite.setTexture(textures[currentFrame]);
@@ -148,12 +150,19 @@ void Troop::updateHealthBar(int currentHealth){
 }
 
 
-void Troop::fightingTroop(Troop *troop) { troop->setHealth(troop->getHealth() - getDamage()); }
+void Troop::fightingTroop(Troop *troop) { 
+    troop->setHealth(troop->getHealth() - getDamage());
+    if(troop->getHealth() < 0)
+        troop->setIsTroopAlive(false);
+}
 
 int generateRandomNumber(int min, int max) { return rand() % (max - min) + min; }
 
 
-void Troop::stopMoving() { sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y); }
+void Troop::stopMoving() { 
+    sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y); 
+    setIsTroopMoving(false);
+}
 void Troop::moveRight(float dtm) { sprite.setPosition(sprite.getPosition().x + getSpeedX() * dtm, sprite.getPosition().y); }
 void Troop::moveLeft(float dtm) { sprite.setPosition(sprite.getPosition().x - getSpeedX() * dtm, sprite.getPosition().y); }
 void Troop::moveUp(float dtm) { sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y - getSpeedY() * dtm); }
@@ -171,3 +180,22 @@ void Troop::setIsTroopSelected(bool condition) { isTroopSelected = condition; }
 
 bool Troop::getShouldTroopMove() { return shouldTroopMove; }
 void Troop::setShouldTroopMove(bool condition) { shouldTroopMove = condition; }
+
+
+
+bool Troop::shouldTroopsInteract(Troop *troop1){
+    float distance = std::sqrt(std::pow(troop1->sprite.getPosition().x - sprite.getPosition().x, 2) + std::pow(troop1->sprite.getPosition().y - sprite.getPosition().y, 2));
+    int radius = 70;
+    if(distance <= radius)
+        return true;
+    return false;
+}
+
+void Troop::setAttackCooldownTroop(float newAttackCooldownTroop) { attackCooldownTroop = newAttackCooldownTroop; }
+float Troop::getAttackCooldownTroop() { return attackCooldownTroop; }
+
+void Troop::setIsTroopMoving(bool newIsTroopMoving) { isTroopMoving = newIsTroopMoving; }
+bool Troop::getIsTroopMoving() { return isTroopMoving; }
+
+void Troop::setCurrentTarget(Troop *newCurrentTarget) { currentTarget = newCurrentTarget; }
+Troop* Troop::getCurrentTarget() { return currentTarget; }

@@ -1,6 +1,9 @@
 #include "Level.h"
 #include "../commonFunction/CommonFunction.h"
 
+void battleSetup(Troop *troop1, Troop *troop2);
+void performBattle(Troop *troop1, Troop *troop2, float dtm);
+
 Level::Level(sf::RenderWindow &gameWindow) : window(&gameWindow)
 {
     std::cout << "Level constructor called!" << std::endl;
@@ -26,7 +29,10 @@ Level::Level(sf::RenderWindow &gameWindow) : window(&gameWindow)
     }
 
     createHero(*this, HERO1, heroStandPosition);
-    createSoldier(*this, LVL1_SOLDIER_ATTACK1);
+    sf::Vector2f soldierSpawn1 = {1200, 370};
+    createSoldier(*this, LVL1_SOLDIER_ATTACK1, soldierSpawn1);
+    sf::Vector2f soldierSpawn2 = {1200, 770};
+    createSoldier(*this, LVL1_SOLDIER_ATTACK1, soldierSpawn2);
 
     fillWaves();
 
@@ -34,6 +40,8 @@ Level::Level(sf::RenderWindow &gameWindow) : window(&gameWindow)
     sf::Texture *buttonTexture = getTexturePtr(getAllTexturesMatrix(), WAVE_SIGN, 0);
     spriteSetting(*newWave, *buttonTexture, 0.2);
     newWave->setPosition(10, 370);
+
+    settingTowerStands();
 }
 
 std::vector<std::vector<int>> Level::getTowerStats() { return towerStats; }
@@ -87,25 +95,34 @@ void Level::update()
                     }
 
 
-                    if(heroj->getIsTroopSelected()){
-                        heroj->setTargetPosition(mousePosition);
-                        heroj->setIsTroopSelected(false);
-                        heroj->setShouldTroopMove(true);
+                    if(heroj[0]->getIsTroopSelected()){
+                        heroj[0]->setTargetPosition(mousePosition);
+                        heroj[0]->setIsTroopSelected(false);
+                        heroj[0]->setShouldTroopMove(true);
                     }
-                    if(heroj->getSprite().getGlobalBounds().contains((sf::Vector2f)(mousePosition))){
-                        heroj->setIsTroopSelected(true);
-                        heroj->setShouldTroopMove(false);
+                    if(heroj[0]->getSprite().getGlobalBounds().contains((sf::Vector2f)(mousePosition))){
+                        heroj[0]->setIsTroopSelected(true);
+                        heroj[0]->setShouldTroopMove(false);
                     }
                 }
         }
         
-        if(heroj->getShouldTroopMove()){
-            heroj->performAnimation(heroj->getWalkTexture(), sf::milliseconds(1000));
-            heroj->move(dtm);
+        if(heroj[0]->getShouldTroopMove()){
+            heroj[0]->performAnimation(heroj[0]->getWalkTexture(), sf::milliseconds(1000));
+            heroj[0]->move(dtm);
+            heroj[0]->setIsTroopFighting(false);
         }
 
         for (auto it = enemies.begin(); it != enemies.end();)
         {
+            battleSetup(heroj[0], *it);
+            performBattle(heroj[0], *it, dtm);
+
+            for(auto &soldier : soldiers){
+                battleSetup(soldier, *it);
+                performBattle(soldier, *it, dtm);
+            }
+
             if (!(*it)->getIsTroopFighting())
             {
                 (*it)->move(dtm);
@@ -126,11 +143,15 @@ void Level::update()
                ++it;
         }
 
+
         for (auto &tower : towers)
             tower->action(currentTime);
 
         window->clear();
         window->draw(backgroundSprite);
+
+        for(auto &stand : towerStands)
+            window->draw(*stand);
 
         for (auto &tower : towers)
             tower->draw(*window);
@@ -141,7 +162,7 @@ void Level::update()
         for (auto &enemy : enemies)
             enemy->draw(*window);
 
-        heroj->draw(*window);
+        heroj[0]->draw(*window);
 
         if(showStartNewWaveFlag && wave <= 3)
             window->draw(*newWave);
@@ -152,11 +173,12 @@ void Level::update()
 
 
 void Level::createHero(Level &level, int code, std::vector<int> heroStandPosition){
-    heroj = new Hero(level, code, heroStandPosition);
+    Hero *hero = new Hero(level, code, heroStandPosition);
+    heroj.push_back(hero);
 }
 
-void Level::createSoldier(Level &level, int code){
-    Soldier *vojnik = new Soldier(level, code);
+void Level::createSoldier(Level &level, int code, sf::Vector2f spawnPosition){
+    Soldier *vojnik = new Soldier(level, code, spawnPosition);
     soldiers.push_back(vojnik);
 }
 
@@ -212,4 +234,98 @@ void Level::fillWaves(){
     wave4.pushEnemyToWave(50000, 3000);
     wave4.pushEnemyToWave(50200, 4000);
     levelWaves.push_back(wave4);
+}
+
+void Level::settingTowerStands()
+{
+    sf::Texture *towerStandTexture = getTexturePtr(getAllTexturesMatrix(), TOWER_STAND, 0);
+    for (auto stand : towerStands)
+        delete stand;
+    towerStands.clear();
+
+    for (size_t i = 0; i < towerStandsPositions.size(); i++)
+    {
+        sf::Sprite *stand = new sf::Sprite();
+        spriteSetting(*stand, *towerStandTexture, 1.);
+        stand->setOrigin(250, 250);
+
+        int positionX = towerStandsPositions[i][0];
+        int positionY = towerStandsPositions[i][1];
+        stand->setPosition(positionX, positionY);
+
+        towerStands.push_back(stand);
+    }
+}
+
+
+void performBattle(Troop *troop1, Troop *troop2, float dtm) {
+    if (troop1->getIsTroopFighting() && troop2->getIsTroopFighting() && troop1->getCurrentTarget() == troop2 && troop2->getCurrentTarget() == troop1) {
+        
+        troop1->setAttackCooldownTroop(troop1->getAttackCooldownTroop() + dtm);
+        troop2->setAttackCooldownTroop(troop2->getAttackCooldownTroop() + dtm);
+
+        if (troop1->getShouldTroopMove()) {
+            troop1->setIsTroopFighting(false);
+            troop1->setCurrentTarget(nullptr);
+        }
+
+        if (troop2->getShouldTroopMove()) {
+            troop2->setIsTroopFighting(false);
+            troop2->setCurrentTarget(nullptr);
+        }
+
+        if (troop1->getAttackCooldownTroop() >= troop1->getAttackSpeed() / 1000.0) {
+            troop1->fightingTroop(troop2);
+            troop2->updateHealthBar(troop2->getHealth());
+            troop1->setAttackCooldownTroop(0.0);
+        }
+
+        if (troop2->getAttackCooldownTroop() >= troop2->getAttackSpeed() / 1000.0) {
+            troop2->fightingTroop(troop1);
+            troop1->updateHealthBar(troop1->getHealth());
+            troop2->setAttackCooldownTroop(0.0);
+        }
+
+        if (troop1->getIsTroopFighting()) {
+            troop1->performAnimation(troop1->getAttackTexture(), sf::milliseconds(troop1->getAttackSpeed()));
+        }
+        if (troop2->getIsTroopFighting()) {
+            troop2->performAnimation(troop2->getAttackTexture(), sf::milliseconds(troop2->getAttackSpeed()));
+        }
+
+        if (!troop1->getIsTroopAlive()) {
+            troop1->setIsTroopFighting(false);
+            troop2->setIsTroopFighting(false);
+            troop1->getSprite().setPosition(-1000, -1000); 
+            troop2->move(dtm);
+            troop2->setCurrentTarget(nullptr); 
+        }
+
+        if (!troop2->getIsTroopAlive()) {
+            troop1->setIsTroopFighting(false);
+            troop2->setIsTroopFighting(false);
+            troop2->getSprite().setPosition(3000, 2000);
+            troop1->setCurrentTarget(nullptr);
+        }
+    }
+}
+
+
+void battleSetup(Troop *troop1, Troop *troop2) {
+    if (troop1->shouldTroopsInteract(troop2) && !troop1->getIsTroopFighting() && troop2->getCurrentTarget() == nullptr) {
+        troop1->setIsTroopFighting(true);
+        troop2->setIsTroopFighting(true);
+        troop2->setCurrentTarget(troop1);
+        troop1->setCurrentTarget(troop2);
+    }
+
+    if (troop1->getShouldTroopMove() || troop1->getIsTroopMoving()) {
+        troop1->setIsTroopFighting(false);
+        troop1->setCurrentTarget(nullptr);
+        
+        if (troop2->getCurrentTarget() == troop1) {
+            troop2->setIsTroopFighting(false);
+            troop2->setCurrentTarget(nullptr);
+        }
+    }
 }

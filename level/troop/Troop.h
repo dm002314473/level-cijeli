@@ -32,6 +32,12 @@ private:
 
     bool isTroopSelected = false;
     bool shouldTroopMove = false;
+    bool isTroopMoving = false;
+
+    float attackCooldownTroop = 0.0;
+
+    Troop *currentTarget = nullptr;
+
 public:
     Troop(Level &level, int code);
 
@@ -49,6 +55,9 @@ public:
     void setFullHealth(int newFullHealth);
     void setIsTroopSelected(bool condition);
     void setShouldTroopMove(bool condition);
+    void setAttackCooldownTroop(float newAttackCooldownTroop);
+    void setIsTroopMoving(bool condition);
+    void setCurrentTarget(Troop *newCurrentTarget);
 
     int getHealth();
     int getDamage();
@@ -65,6 +74,9 @@ public:
     std::vector<sf::Texture>& getAttackTexture();
     bool getIsTroopSelected();
     bool getShouldTroopMove();
+    float getAttackCooldownTroop();
+    bool getIsTroopMoving();
+    Troop* getCurrentTarget();
 
     void loadTroopTextures(Level &level, int code, std::vector<sf::Texture> &textures);
 
@@ -89,4 +101,6 @@ public:
     void moveLeft(float dtm); 
     void moveUp(float dtm);
     void moveDown(float dtm);
+
+    bool shouldTroopsInteract(Troop *troop1);
 };

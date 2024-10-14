@@ -34,6 +34,8 @@ void Hero::move(float dtm)
         return;
     }
 
+    setIsTroopMoving(true);
+
     if (currentPos.x < targetPos.x)
         moveRight(dtm); 
     else if (currentPos.x > targetPos.x)

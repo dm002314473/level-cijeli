@@ -15,7 +15,7 @@ private:
     int healPerSecond;
     sf::Vector2f soldierStandPosition;
 public:
-    Soldier(Level &level, int code);
+    Soldier(Level &level, int code, sf::Vector2f spawnPosition);
 
     void setSoldierValues(std::vector<std::vector<int>> allStats, int code);
     void setShouldSoldierHeal(bool condition);

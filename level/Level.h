@@ -42,10 +42,10 @@ private:
         {90003, 400, 50, 100, 3500, 350, 1000000},
         {90004, 400, 60, 110, 2200, 370, 1000000}};
     std::vector<std::vector<int>> troopStats = {
-        {50000, 20, 25, 700, 0, 1, 200, 200, 2, 50, 1500},
-        {50100, 50, 70, 500, 0, 0, 400, 400, 1, 5, 1000},
-        {50200, 5, 7, 500, 0, 0, 500, 500, 1, 5, 1000},
-        {90015, 100, 200, 1045, 0, 1, 300, 300, 0, 50, 1000},
+        {50000, 40, 60, 800, 0, 1, 200, 200, 2, 50, 1000},
+        {50100, 1, 4, 20, 0, 0, 400, 400, 1, 5, 1000},
+        {50200, 20, 30, 70, 0, 0, 350, 350, 1, 5, 1000},
+        {90015, 24, 40, 580, 0, 1, 300, 300, 0, 50, 1000},
         {60100, 1, 3, 50, 0, 0, 300, 300, 10, 10, 1000},
         {60110, 3, 4, 100, 0, 1, 300, 300, 10, 15, 1360},
         {60120, 6, 10, 150, 0, 2, 300, 300, 10, 20, 1360},
@@ -135,9 +135,10 @@ private:
 
     sf::Sprite *newWave;
 
-    Troop *heroj;
+    std::vector<Troop *> heroj;
     std::vector<Troop *> soldiers;
     std::vector<Troop *> enemies;
+    std::vector<sf::Sprite *> towerStands;
 
     int wave = 0;
     bool showStartNewWaveFlag = true;
@@ -155,8 +156,10 @@ public:
     void loadBackground();
     void update();
     void createHero(Level &level, int code, std::vector<int> heroStandPosition);
-    void createSoldier(Level &level, int code);
+    void createSoldier(Level &level, int code, sf::Vector2f spawnPosition);
 
     void fillWaves();
     void startNewWave(int waveIndex);
+
+    void settingTowerStands();
 };
