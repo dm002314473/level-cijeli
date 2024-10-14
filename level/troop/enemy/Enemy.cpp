@@ -77,4 +77,10 @@ bool Enemy::shouldEnemyTurn()
     return false;
 }
 
+int* Enemy::getTroopSpecificStat() {
+    int* stats = new int[2];
+    stats[0] = getBounty();
+    stats[1] = getLiveTaking();
+    return stats;
+}
 

@@ -77,3 +77,9 @@ void Soldier::soldierUpgrade(Level &level, int code){
     setSoldierValues(level.getTroopStats(), code);
     setFullHealth(getHealth());
 }
+
+int* Soldier::getTroopSpecificStat(){
+    int* stats = new int[1];
+    stats[0] = getHealPerSecond();
+    return stats; 
+}

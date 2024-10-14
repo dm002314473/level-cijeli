@@ -3,6 +3,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <string>
+#include <sstream>
 #include "towers/Tower.h"
 #include "troop/Troop.h"
 #include "troop/hero/Hero.h"
@@ -115,7 +117,6 @@ private:
     sf::Texture backgroundTexture;
     sf::Sprite backgroundSprite;
     sf::Clock globalClock;
-    sf::Clock moveClock;
     std::vector<Tower *> towers;
     std::vector<std::vector<int>> globalWaypoints  = {
         {0, 432, 2},
@@ -145,6 +146,17 @@ private:
     
     bool shouldHeroMove = false;
 
+    sf::Text moneyText;
+    sf::RectangleShape moneyBox;
+    sf::Font font;
+    std::stringstream ss;
+    sf::Text hearthText;
+    sf::RectangleShape hearthBox;
+    std::stringstream ssh;
+
+    int hearth = 20;
+    int money = 1000;
+
 public:
     Level(sf::RenderWindow &window);
 
@@ -162,4 +174,10 @@ public:
     void startNewWave(int waveIndex);
 
     void settingTowerStands();
+
+    void setMoney(int newMoney);
+    int getMoney();
+
+    void updateMoney(int price);
+    void updateHearth(int lostHearth);
 };

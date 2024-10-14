@@ -34,4 +34,6 @@ public:
     void setTargetPosition(sf::Vector2i &mousePos) override {};
     void move(float dtm) override {};
     bool isOutOfMap() override { return false; }
+
+    int *getTroopSpecificStat();
 };

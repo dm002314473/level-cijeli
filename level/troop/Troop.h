@@ -93,6 +93,7 @@ public:
     virtual void move(float dtm) = 0;
     virtual bool isOutOfMap() = 0;
     virtual void setTargetPosition(sf::Vector2i &mousePos) = 0;
+    virtual int* getTroopSpecificStat() = 0;
 
     bool isTroopClicked(sf::Vector2i &mousePos);
 

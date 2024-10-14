@@ -42,6 +42,17 @@ Level::Level(sf::RenderWindow &gameWindow) : window(&gameWindow)
     newWave->setPosition(10, 370);
 
     settingTowerStands();
+
+    setMoney(1000);
+    if (!font.loadFromFile("level-cijeli/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf"))
+        return;
+    setTextBox(moneyText, font, moneyBox, 10, 10);
+    ss << getMoney();
+    moneyText.setString(ss.str());
+    
+    setTextBox(hearthText, font, hearthBox, 115, 10);
+    ssh << hearth;
+    hearthText.setString(ssh.str());
 }
 
 std::vector<std::vector<int>> Level::getTowerStats() { return towerStats; }
@@ -69,7 +80,7 @@ void Level::update()
 {
     while (window->isOpen())
     {
-        sf::Time deltaTimeMove = moveClock.restart();
+        sf::Time deltaTimeMove = globalClock.restart();
         float dtm = deltaTimeMove.asSeconds();
 
         sf::Time currentTime = globalClock.getElapsedTime();
@@ -136,8 +147,14 @@ void Level::update()
 
            if ((*it)->isOutOfMap())
            {
-               delete *it;
-               it = enemies.erase(it);
+                int *stats = (*it)->getTroopSpecificStat();
+                if((*it)->getIsTroopAlive())
+                    updateHearth(stats[1]);
+                else
+                    updateMoney(-stats[0]);
+                delete[] stats;
+                delete *it;
+                it = enemies.erase(it);
            }
            else
                ++it;
@@ -163,6 +180,11 @@ void Level::update()
             enemy->draw(*window);
 
         heroj[0]->draw(*window);
+
+        window->draw(moneyBox);
+        window->draw(moneyText);
+        window->draw(hearthBox);
+        window->draw(hearthText);
 
         if(showStartNewWaveFlag && wave <= 3)
             window->draw(*newWave);
@@ -328,4 +350,22 @@ void battleSetup(Troop *troop1, Troop *troop2) {
             troop2->setCurrentTarget(nullptr);
         }
     }
+}
+
+void Level::setMoney(int newMoney) { money = newMoney; }
+int Level::getMoney() { return money; }
+
+void Level::updateMoney(int price)
+{
+    setMoney(getMoney() - price);
+    ss.str("");
+    ss << getMoney();
+    moneyText.setString(ss.str());
+}
+
+void Level::updateHearth(int lostHearth){
+    hearth = hearth - lostHearth;
+    ssh.str("");
+    ssh << hearth;
+    hearthText.setString(ssh.str());
 }
