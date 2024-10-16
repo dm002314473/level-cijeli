@@ -92,7 +92,7 @@ public:
     
     virtual void move(float dtm) = 0;
     virtual bool isOutOfMap() = 0;
-    virtual void setTargetPosition(sf::Vector2i &mousePos) = 0;
+    virtual void setTargetPosition(sf::Vector2i mousePos) = 0;
     virtual int* getTroopSpecificStat() = 0;
 
     bool isTroopClicked(sf::Vector2i &mousePos);
@@ -104,4 +104,7 @@ public:
     void moveDown(float dtm);
 
     bool shouldTroopsInteract(Troop *troop1);
+
+    bool isTroopOnPath(std::vector<sf::Color> colors, sf::Color pixelColor);
+    void checkTroopForMovement(sf::Sprite spriteForMove, sf::Vector2f mousePosition, std::vector<sf::Color> colors, sf::Color pixelColor);
 };

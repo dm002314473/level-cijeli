@@ -74,7 +74,7 @@ void Hero::setShouldHeroHeal(bool condition) { shouldHeroHeal = condition; }
 int Hero::getHealPerSecond() { return healPerSecond; }
 void Hero::setHealPerSecond(int newHealPerSecond) { healPerSecond = newHealPerSecond; }
 
-void Hero::setTargetPosition(sf::Vector2i &mousePos) { targetPosition = static_cast<sf::Vector2f>(mousePos); }
+void Hero::setTargetPosition(sf::Vector2i mousePos) { targetPosition = (sf::Vector2f)mousePos; }
 
 int* Hero::getTroopSpecificStat(){
     int* stats = new int[1];

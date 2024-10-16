@@ -150,7 +150,7 @@ void Troop::updateHealthBar(int currentHealth){
 }
 
 
-void Troop::fightingTroop(Troop *troop) { 
+void Troop::fightingTroop(Troop *troop) {
     troop->setHealth(troop->getHealth() - getDamage());
     if(troop->getHealth() < 0)
         troop->setIsTroopAlive(false);
@@ -185,7 +185,7 @@ void Troop::setShouldTroopMove(bool condition) { shouldTroopMove = condition; }
 
 bool Troop::shouldTroopsInteract(Troop *troop1){
     float distance = std::sqrt(std::pow(troop1->sprite.getPosition().x - sprite.getPosition().x, 2) + std::pow(troop1->sprite.getPosition().y - sprite.getPosition().y, 2));
-    int radius = 70;
+    int radius = 170;
     if(distance <= radius)
         return true;
     return false;
@@ -199,3 +199,26 @@ bool Troop::getIsTroopMoving() { return isTroopMoving; }
 
 void Troop::setCurrentTarget(Troop *newCurrentTarget) { currentTarget = newCurrentTarget; }
 Troop* Troop::getCurrentTarget() { return currentTarget; }
+
+bool Troop::isTroopOnPath(std::vector<sf::Color> colors, sf::Color pixelColor){
+    for (int i = 0; i < colors.size(); i++)
+        if(colors[i] == pixelColor)
+            return true;
+    return false;
+}
+
+void Troop::checkTroopForMovement(sf::Sprite spriteForMove, sf::Vector2f mousePosition, std::vector<sf::Color> colors, sf::Color pixelColor){
+    if(getIsTroopSelected()){
+        setTargetPosition((sf::Vector2i)mousePosition);
+        setIsTroopSelected(false);
+        setShouldTroopMove(true);
+    }
+    if(spriteForMove.getGlobalBounds().contains(mousePosition)){;
+        setIsTroopSelected(true);
+        setShouldTroopMove(false);
+    }
+    if(!isTroopOnPath(colors, pixelColor)){
+        setIsTroopSelected(false);
+        setShouldTroopMove(false);
+    }
+}

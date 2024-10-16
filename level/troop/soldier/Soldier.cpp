@@ -20,26 +20,35 @@ void Soldier::setSoldierValues(std::vector<std::vector<int>> allStats, int code)
     }
 }
 
-bool Soldier::soldierMoving(sf::Sprite &sprite, sf::Vector2i &mousePos)
+void Soldier::move(float dtm)
 {
-    int moveX = 0, moveY = 0;
-    sf::Vector2f currentPos = sprite.getPosition();
-    if (currentPos.x < mousePos.x)
-        moveX = 1;
-    else if (currentPos.x > mousePos.x)
-        moveX = -1;
+    sf::Vector2f targetPos((float)(targetPosition.x), (float)(targetPosition.y));
+    sf::Vector2f currentPos = getSprite().getPosition();
+    float tolerance = 0.1f;
 
-    if (currentPos.y < mousePos.y)
-        moveY = 1;
-    else if (currentPos.y > mousePos.y)
-        moveY = -1;
+    if (std::abs(currentPos.x - targetPos.x) < tolerance && std::abs(currentPos.y - targetPos.y) < tolerance)
+    {
+        stopMoving();
+        setShouldTroopMove(false);
+        idleAnimation(getWalkTexture());
+        return;
+    }
 
-    sprite.setPosition(currentPos.x + moveX, currentPos.y + moveY);
+    setIsTroopMoving(true);
 
-    if (int(currentPos.x) == mousePos.x && int(currentPos.y) == mousePos.y)
-        return true;
-    return false;
+    if (currentPos.x < targetPos.x)
+        moveRight(dtm); 
+    else if (currentPos.x > targetPos.x)
+        moveLeft(dtm);
+
+    if (currentPos.y < targetPos.y)
+        moveDown(dtm);
+    else if (currentPos.y > targetPos.y)
+        moveUp(dtm);
+
 }
+
+
 bool Soldier::isEnemyInSoldiersRange(Troop *enemyTroop)
 {
     if (isPointInCircle(enemyTroop->getSprite().getPosition(), getSprite().getPosition(), 150))
@@ -83,3 +92,5 @@ int* Soldier::getTroopSpecificStat(){
     stats[0] = getHealPerSecond();
     return stats; 
 }
+
+void Soldier::setTargetPosition(sf::Vector2i mousePos) { targetPosition = (sf::Vector2f)mousePos; };

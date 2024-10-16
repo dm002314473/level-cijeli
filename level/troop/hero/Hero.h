@@ -29,7 +29,7 @@ public:
     bool isEnemyInHeroesRange(Troop *enemyTroop);
     bool isPointInCircle(sf::Vector2f point, sf::Vector2f circleCenter, float radius);
 
-    void setTargetPosition(sf::Vector2i &mousePos);
+    void setTargetPosition(sf::Vector2i mousePos) override;
     void move(float dtm) override;
     bool isOutOfMap() override { return false; }
 

@@ -29,7 +29,7 @@ public:
 
     bool shouldEnemyTurn();
 
-    void setTargetPosition(sf::Vector2i &mousePos) override {};
+    void setTargetPosition(sf::Vector2i mousePos) override {};
     void move(float dtm) override;
     bool isOutOfMap() override;
     int* getTroopSpecificStat() override;

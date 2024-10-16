@@ -64,6 +64,7 @@ private:
         {38, {"level-cijeli/images/forPause.png"}},
         {39, {"level-cijeli/images/redHealthBar.png"}},
         {40, {"level-cijeli/images/greenHealthBar.png"}},
+        {41, {"level-cijeli/images/moveFlag.png"}},
         {4000, {"level-cijeli/images/bolt.png"}},
         {5000, {"level-cijeli/images/wave_sign.png"}},
         {9999, {"level-cijeli/images/main_map.png"}},
@@ -135,6 +136,7 @@ private:
     std::vector<Wave> levelWaves;
 
     sf::Sprite *newWave;
+    sf::Sprite *moveFlag;
 
     std::vector<Troop *> heroj;
     std::vector<Troop *> soldiers;
@@ -156,6 +158,10 @@ private:
 
     int hearth = 20;
     int money = 1000;
+    
+    sf::Image image;
+    std::vector<sf::Color> colors;
+    sf::Vector2u imageSize;
 
 public:
     Level(sf::RenderWindow &window);

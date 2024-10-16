@@ -10,6 +10,7 @@
 #define FORPAUSE 38
 #define REDHEALTHBAR 39
 #define GREENHEALTHBAR 40
+#define MOVEFLAG 41
 #define BOLT 4000
 #define WAVE_SIGN 5000
 #define MAIN_MAP 9999
