@@ -262,11 +262,10 @@ void Level::startNewWave(int waveIndex)
 
 void Level::fillWaves(){
     Wave wave1;
-    wave1.pushEnemyToWave(50000, 500);
-    // wave1.pushEnemyToWave(50100, 500);
-    // wave1.pushEnemyToWave(50100, 1000);
-    // wave1.pushEnemyToWave(50100, 1500);
-    // wave1.pushEnemyToWave(50100, 2000);
+    wave1.pushEnemyToWave(50100, 500);
+    wave1.pushEnemyToWave(50100, 1000);
+    wave1.pushEnemyToWave(50100, 1500);
+    wave1.pushEnemyToWave(50100, 2000);
     levelWaves.push_back(wave1);
 
     Wave wave2;
