@@ -151,7 +151,24 @@ void Troop::updateHealthBar(int currentHealth){
 
 
 void Troop::fightingTroop(Troop *troop) {
-    troop->setHealth(troop->getHealth() - getDamage());
+    switch (troop->getPhysicalArmor())
+    {
+    case 1:
+        troop->setHealth(troop->getHealth() - getDamage() * (1 - generateRandomNumber(1, 30) / 100.));
+        break;
+    case 2:
+        troop->setHealth(troop->getHealth() - getDamage() * (1 - generateRandomNumber(31, 60) / 100.));
+        break;
+    case 3:
+        troop->setHealth(troop->getHealth() - getDamage() * (1 - generateRandomNumber(61, 90) / 100.));
+        break;
+    case 4:
+        troop->setHealth(troop->getHealth() - getDamage() * (1 - generateRandomNumber(91, 100) / 100.));
+        break;
+    default:
+        troop->setHealth(troop->getHealth() - getDamage());
+        break;
+    }
     if(troop->getHealth() < 0)
         troop->setIsTroopAlive(false);
 }

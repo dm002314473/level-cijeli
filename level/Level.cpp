@@ -163,10 +163,12 @@ void Level::update()
             }
 
             //multiple attackers
-            for(auto &soldier : soldiers){
+            for(auto &soldier : soldiers)
                 if(soldier->getCurrentTarget() == nullptr && soldier->shouldTroopsInteract(*it))
                     addAnotherAttacker(soldier, *it, dtm);
-            }
+
+            if(heroj[0]->getCurrentTarget() == nullptr && heroj[0]->shouldTroopsInteract(*it))
+                addAnotherAttacker(heroj[0], *it, dtm);
 
             if (!(*it)->getIsTroopFighting())
             {
@@ -335,7 +337,6 @@ void performBattle(Troop *friendlyTroop, Troop *enemyTroop, float dtm) {
             friendlyTroop->setIsTroopFighting(false);
             friendlyTroop->setCurrentTarget(nullptr);
         }
-
         if (enemyTroop->getShouldTroopMove()) {
             enemyTroop->setIsTroopFighting(false);
             enemyTroop->setCurrentTarget(nullptr);
@@ -346,7 +347,6 @@ void performBattle(Troop *friendlyTroop, Troop *enemyTroop, float dtm) {
             enemyTroop->updateHealthBar(enemyTroop->getHealth());
             friendlyTroop->setAttackCooldownTroop(0.0);
         }
-
         if (enemyTroop->getAttackCooldownTroop() >= enemyTroop->getAttackSpeed() / 1000.0) {
             enemyTroop->fightingTroop(friendlyTroop);
             friendlyTroop->updateHealthBar(friendlyTroop->getHealth());
@@ -355,7 +355,6 @@ void performBattle(Troop *friendlyTroop, Troop *enemyTroop, float dtm) {
 
         if (friendlyTroop->getIsTroopFighting())
             friendlyTroop->performAnimation(friendlyTroop->getAttackTexture(), sf::milliseconds(friendlyTroop->getAttackSpeed()));
-
         if (enemyTroop->getIsTroopFighting())
             enemyTroop->performAnimation(enemyTroop->getAttackTexture(), sf::milliseconds(enemyTroop->getAttackSpeed()));
 
@@ -366,7 +365,6 @@ void performBattle(Troop *friendlyTroop, Troop *enemyTroop, float dtm) {
             enemyTroop->move(dtm);
             enemyTroop->setCurrentTarget(nullptr); 
         }
-
         if (!enemyTroop->getIsTroopAlive()) {
             friendlyTroop->setIsTroopFighting(false);
             enemyTroop->setIsTroopFighting(false);
@@ -400,8 +398,7 @@ void battleSetup(Troop *friendlyTroop, Troop *enemyTroop) {
 void addAnotherAttacker(Troop *friendlyTroop, Troop *enemyTroop, float dtm){
     friendlyTroop->setAttackCooldownTroop(friendlyTroop->getAttackCooldownTroop() + dtm);
     
-    if (friendlyTroop->getIsTroopFighting())
-        friendlyTroop->performAnimation(friendlyTroop->getAttackTexture(), sf::milliseconds(friendlyTroop->getAttackSpeed()));
+    friendlyTroop->performAnimation(friendlyTroop->getAttackTexture(), sf::milliseconds(friendlyTroop->getAttackSpeed()));
 
     if (friendlyTroop->getAttackCooldownTroop() >= friendlyTroop->getAttackSpeed() / 1000.0) {
             friendlyTroop->fightingTroop(enemyTroop);
