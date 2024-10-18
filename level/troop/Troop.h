@@ -26,6 +26,7 @@ private:
     int magicArmor;
     int physicalArmor;
     int attackSpeed;
+    int attackRange;
     bool isTroopFighting = false;
     bool isTroopAlive = true;
     int fullHealth;
@@ -49,6 +50,7 @@ public:
     void setMagicArmor(int newMagicArmor);
     void setPhysicalArmor(int newPhysicalArmor);
     void setAttackSpeed(int newAttackSpeed);
+    void setAttackRange(int newAttackRAnge);
     void setSprite(sf::Sprite newSprite);
     void setIsTroopFighting(bool condition);
     void setIsTroopAlive(bool condition);
@@ -66,6 +68,7 @@ public:
     int getMagicArmor();
     int getPhysicalArmor();
     int getAttackSpeed();
+    int getAttackRange();
     sf::Sprite& getSprite();
     bool getIsTroopFighting();
     bool getIsTroopAlive();

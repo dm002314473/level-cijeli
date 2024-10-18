@@ -44,15 +44,16 @@ private:
         {90003, 400, 50, 100, 3500, 350, 1000000},
         {90004, 400, 60, 110, 2200, 370, 1000000}};
     std::vector<std::vector<int>> troopStats = {
-        {50000, 40, 60, 800, 0, 0, 200, 200, 2, 50, 1000},
-        {50100, 1, 4, 20, 0, 0, 400, 400, 1, 5, 1000},
-        {50200, 20, 30, 70, 0, 0, 350, 350, 1, 5, 1000},
-        {90015, 24, 40, 580, 0, 1, 300, 300, 0, 50, 1000},
-        {60100, 1, 3, 50, 0, 0, 300, 300, 10, 10, 1000},
-        {60110, 3, 4, 100, 0, 1, 300, 300, 10, 15, 1360},
-        {60120, 6, 10, 150, 0, 2, 300, 300, 10, 20, 1360},
-        {60130, 16, 24, 250, 1, 1, 300, 300, 10, 40, 1370},
-        {60140, 12, 18, 200, 1, 3, 300, 300, 14, 30, 1470}};
+        {50000, 40, 60, 800, 0, 0, 200, 200, 2, 50, 1000, 70},
+        {50100, 1, 4, 20, 0, 0, 400, 400, 1, 5, 1000, 70},
+        {50200, 20, 30, 70, 0, 0, 350, 350, 1, 5, 1000, 70},
+        {50300, 10, 15, 200, 0, 1, 450, 450, 3, 40, 2000, 200},
+        {90015, 24, 40, 580, 0, 1, 300, 300, 0, 50, 1000, 70},
+        {60100, 1, 3, 50, 0, 0, 300, 300, 10, 10, 1000, 70},
+        {60110, 3, 4, 100, 0, 1, 300, 300, 10, 15, 1360, 70},
+        {60120, 6, 10, 150, 0, 2, 300, 300, 10, 20, 1360, 70},
+        {60130, 16, 24, 250, 1, 1, 300, 300, 10, 40, 1370, 70},
+        {60140, 12, 18, 200, 1, 3, 300, 300, 14, 30, 1470, 70}};
     std::vector<std::pair<int, std::vector<std::string>>> imagesPaths = {
         {1, {"level-cijeli/images/lvl1.png"}},
         {2, {"level-cijeli/images/lvl2.png"}},
@@ -77,6 +78,8 @@ private:
         {50101, {"level-cijeli/images/goblin_walk1.png", "level-cijeli/images/goblin_walk2.png", "level-cijeli/images/goblin_walk3.png", "level-cijeli/images/goblin_walk4.png"}},
         {50200, {"level-cijeli/images/gnome_attack1.png", "level-cijeli/images/gnome_attack2.png", "level-cijeli/images/gnome_attack3.png", "level-cijeli/images/gnome_attack4.png"}},
         {50201, {"level-cijeli/images/gnome_walk1.png", "level-cijeli/images/gnome_walk2.png", "level-cijeli/images/gnome_walk3.png"}},
+        {50300, {"level-cijeli/images/roller_attack1.png", "level-cijeli/images/roller_attack2.png", "level-cijeli/images/roller_attack3.png"}},
+        {50301, {"level-cijeli/images/roller_walk1.png", "level-cijeli/images/roller_walk2.png", "level-cijeli/images/roller_walk3.png", "level-cijeli/images/roller_walk4.png", "level-cijeli/images/roller_walk5.png", "level-cijeli/images/roller_walk6.png", "level-cijeli/images/roller_walk7.png", "level-cijeli/images/roller_walk8.png", "level-cijeli/images/roller_walk9.png", "level-cijeli/images/roller_walk10.png"}},  
         {69997, {"level-cijeli/images/abilityUpgradeMenu.png"}},
         {69998, {"level-cijeli/images/tower_upgrade_split.png"}},
         {69999, {"level-cijeli/images/tower_upgrade.png"}},

@@ -10,6 +10,7 @@ Enemy::Enemy(Level &level, int code, std::vector<std::vector<int>> &waypoints, i
     int positionX = generateRandomNumber(waypoints[0][0] - 150, waypoints[0][0] + 10) - spawnDelayPixels;
     int positionY = generateRandomNumber(waypoints[0][1] - 150, waypoints[0][1] + 10);
     getSprite().setPosition(positionX, positionY);
+    setIsTroopMoving(true);
 }
 
 void Enemy::setEnemyValues(std::vector<std::vector<int>> allStats, int code){

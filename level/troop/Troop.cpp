@@ -34,6 +34,7 @@ void Troop::setValues(std::vector<std::vector<int>> allStats, int code)
                 setSpeedX(allStats[i][6]);
                 setSpeedY(allStats[i][7]);
                 setAttackSpeed(allStats[i][10]);
+                setAttackRange(allStats[i][11]);
             }
         }
     }
@@ -50,6 +51,7 @@ void Troop::setSpeedY(int newSpeedY) { speedY = newSpeedY; }
 void Troop::setMagicArmor(int newMagicArmor) { magicArmor = newMagicArmor; }
 void Troop::setPhysicalArmor(int newPhysicalArmor) { physicalArmor = newPhysicalArmor; }
 void Troop::setAttackSpeed(int newAttackSpeed) { attackSpeed = newAttackSpeed; }
+void Troop::setAttackRange(int newAttackRange) { attackRange = newAttackRange; }
 void Troop::setSprite(sf::Sprite newSprite) { sprite = newSprite; }
 void Troop::setIsTroopFighting(bool condition) { isTroopFighting = condition; }
 void Troop::setIsTroopAlive(bool condition) { isTroopAlive = condition; }
@@ -62,6 +64,7 @@ int Troop::getSpeedY() { return speedY; }
 int Troop::getMagicArmor() { return magicArmor; }
 int Troop::getPhysicalArmor() { return physicalArmor; }
 int Troop::getAttackSpeed() { return attackSpeed; }
+int Troop::getAttackRange() { return attackRange; }
 sf::Sprite& Troop::getSprite() { return sprite; }
 bool Troop::getIsTroopFighting() { return isTroopFighting; }
 bool Troop::getIsTroopAlive()
@@ -202,8 +205,7 @@ void Troop::setShouldTroopMove(bool condition) { shouldTroopMove = condition; }
 
 bool Troop::shouldTroopsInteract(Troop *troop1){
     float distance = std::sqrt(std::pow(troop1->sprite.getPosition().x - sprite.getPosition().x, 2) + std::pow(troop1->sprite.getPosition().y - sprite.getPosition().y, 2));
-    int radius = 170;
-    if(distance <= radius)
+    if(distance <= getAttackRange())
         return true;
     return false;
 }

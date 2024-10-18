@@ -152,6 +152,20 @@ void Level::update()
 
         for (auto it = enemies.begin(); it != enemies.end();)
         {
+            if((*it)->getAttackRange() > 70){
+                (*it)->setIsTroopMoving(true);
+                for(auto &soldier : soldiers)
+                    if((*it)->shouldTroopsInteract(soldier)){
+                        addAnotherAttacker(*it, soldier, dtm);
+                        if(soldier->getIsTroopAlive())
+                            (*it)->setIsTroopMoving(false);
+                    }
+                if((*it)->shouldTroopsInteract(heroj[0])){
+                    addAnotherAttacker(*it, heroj[0], dtm);
+                    if(heroj[0]->getIsTroopAlive())
+                        (*it)->setIsTroopMoving(false);
+                }
+            }
 
             battleSetup(heroj[0], *it);
             performBattle(heroj[0], *it, dtm);
@@ -170,7 +184,7 @@ void Level::update()
             if(heroj[0]->getCurrentTarget() == nullptr && heroj[0]->shouldTroopsInteract(*it))
                 addAnotherAttacker(heroj[0], *it, dtm);
 
-            if (!(*it)->getIsTroopFighting())
+            if((*it)->getIsTroopMoving())
             {
                 (*it)->move(dtm);
                 (*it)->performAnimation((*it)->getWalkTexture(), sf::milliseconds(1000));
@@ -264,10 +278,14 @@ void Level::startNewWave(int waveIndex)
 
 void Level::fillWaves(){
     Wave wave1;
-    wave1.pushEnemyToWave(50100, 500);
-    wave1.pushEnemyToWave(50100, 1000);
-    wave1.pushEnemyToWave(50100, 1500);
-    wave1.pushEnemyToWave(50100, 2000);
+    // wave1.pushEnemyToWave(50100, 500);
+    // wave1.pushEnemyToWave(50100, 1000);
+    // wave1.pushEnemyToWave(50100, 1500);
+    // wave1.pushEnemyToWave(50100, 2000);
+    wave1.pushEnemyToWave(50300, 500);
+    wave1.pushEnemyToWave(50300, 1500);
+    wave1.pushEnemyToWave(50300, 2000);
+    wave1.pushEnemyToWave(50300, 2500);
     levelWaves.push_back(wave1);
 
     Wave wave2;
@@ -363,7 +381,8 @@ void performBattle(Troop *friendlyTroop, Troop *enemyTroop, float dtm) {
             enemyTroop->setIsTroopFighting(false);
             friendlyTroop->getSprite().setPosition(-1000, -1000); 
             enemyTroop->move(dtm);
-            enemyTroop->setCurrentTarget(nullptr); 
+            enemyTroop->setCurrentTarget(nullptr);
+            enemyTroop->setIsTroopMoving(true);
         }
         if (!enemyTroop->getIsTroopAlive()) {
             friendlyTroop->setIsTroopFighting(false);
@@ -379,9 +398,10 @@ void performBattle(Troop *friendlyTroop, Troop *enemyTroop, float dtm) {
 void battleSetup(Troop *friendlyTroop, Troop *enemyTroop) {
     if (friendlyTroop->shouldTroopsInteract(enemyTroop) && !friendlyTroop->getIsTroopFighting() && enemyTroop->getCurrentTarget() == nullptr) {
         friendlyTroop->setIsTroopFighting(true);
+        friendlyTroop->setCurrentTarget(enemyTroop);
         enemyTroop->setIsTroopFighting(true);
         enemyTroop->setCurrentTarget(friendlyTroop);
-        friendlyTroop->setCurrentTarget(enemyTroop);
+        enemyTroop->setIsTroopMoving(false);
     }
 
     if (friendlyTroop->getShouldTroopMove() || friendlyTroop->getIsTroopMoving()) {
@@ -391,6 +411,7 @@ void battleSetup(Troop *friendlyTroop, Troop *enemyTroop) {
         if (enemyTroop->getCurrentTarget() == friendlyTroop) {
             enemyTroop->setIsTroopFighting(false);
             enemyTroop->setCurrentTarget(nullptr);
+            enemyTroop->setIsTroopMoving(true);
         }
     }
 }
